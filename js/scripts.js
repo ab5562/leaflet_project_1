@@ -11,6 +11,9 @@ L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x
 //L.marker([39.933429, -75.159247]).addTo(map)
 //   .bindPopup('TEST')
 
+
+
+
 var food = [
 	{
 		name: 'Pat\'s King of Steaks',
@@ -49,6 +52,7 @@ var institutions = [
 	//},
 ]
 
+
 //create markers
 
 var foodlayergroup = L.layerGroup();
@@ -63,4 +67,27 @@ food.forEach(function(data) {
 	foodlayergroup.addLayer(thisMarker);
 }) ;
 
+var institutionlayergroup = L.layerGroup();
+
+institutions.forEach(function(data) {
+	var thisMarker = L.marker(data.coord, {
+		title: data.name,
+	})
+	thisMarker.bindPopup(data.name + ' - ' + data.description);
+
+	//add the marker to the layergroup
+	institutionlayergroup.addLayer(thisMarker);
+}) ;
+
 foodlayergroup.addTo(map);
+institutionlayergroup.addTo(map);
+
+
+var types = {
+  "Food": foodlayergroup,
+  "Institutions": institutionlayergroup,
+}
+
+L.control.layers(null, types, {
+  collapsed: false
+}).addTo(map);
